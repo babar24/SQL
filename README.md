@@ -106,4 +106,46 @@ This repository can be used for quick revisions of concepts of SQL which include
 | SQRT() | Returns the square root of a number. | `SELECT SQRT(number) FROM table_name;` | `SELECT SQRT(64);` |
 | TRUNCATE() | Truncates a number to the specified number of decimal places. | `SELECT TRUNCATE(number, decimals) FROM table_name;` | `SELECT TRUNCATE(135.375, 2);` |
 
+### Date and Time SQL Commands
+
+| Command | Description | Syntax | Example | Notes |
+|---|---|---|---|---|
+| CURRENT_DATE()/CURDATE() | The CURRENT_DATE command returns the current date. | `SELECT CURRENT_DATE() AS current_date;` | `SELECT CURRENT_DATE() AS current_date;` | Date returned as `YYYY-MM-DD` or `YYYYMMDD` |
+| CURRENT_TIME()/CURTIME() | The CURRENT_TIME command returns the current time. | `SELECT CURRENT_TIME() AS current_time;` | `SELECT CURRENT_TIME() AS current_time;` | Time returned as `HH:MM:SS` or `HHMMSS.uuuuuu` |
+| CURRENT_TIMESTAMP() | The CURRENT_TIMESTAMP command returns the current date and time. | `SELECT CURRENT_TIMESTAMP() AS current_timestamp;` | `SELECT CURRENT_TIMESTAMP() AS current_timestamp;` | Date/time returned as `YYYY-MM-DD HH:MM:SS` or `YYYYMMDDHHMMSS.uuuuuu` |
+| NOW() | The NOW() function returns the current date and time. | `SELECT NOW();` | `SELECT NOW();` | Date/time returned as `YYYY-MM-DD HH:MM:SS` or `YYYYMMDDHHMMSS.uuuuuu` |
+| DATE() | The DATE() function extracts the date part from a datetime expression. | `SELECT DATE(expression) FROM table_name;` | `SELECT DATE('2017-06-15');` | |
+| DAY()/DAYOFMONTH() | Returns the day of the month for a given date (1 to 31). | `SELECT DAY(date) FROM table_name;` | `SELECT DAY('2017-06-15 09:34:21');` | |
+| DAYNAME() | Returns the weekday name for a given date. | `SELECT DAYNAME(date) FROM table_name;` | `SELECT DAYNAME('2017-06-15');` | |
+| DAYOFWEEK() | Returns the weekday index for a given date (1 = Sunday, 2 = Monday, ..., 7 = Saturday). | `SELECT DAYOFWEEK(date) FROM table_name;` | `SELECT DAYOFWEEK('2017-06-15 09:34:21');` | |
+| DAYOFYEAR() | Returns the day of the year for a given date (1 to 366). | `SELECT DAYOFYEAR(date) FROM table_name;` | `SELECT DAYOFYEAR('2017-01-01');` | |
+| MONTH() | Returns the month part for a given date (1 to 12). | `SELECT MONTH(date) FROM table_name;` | `SELECT MONTH('2017-06-15 09:34:21');` | |
+| MONTHNAME() | Returns the name of the month for a given date. | `SELECT MONTHNAME(date) FROM table_name;` | `SELECT MONTHNAME('2017-06-15');` | |
+| QUARTER() | Returns the quarter of the year for a given date (1 to 4). | `SELECT QUARTER(date) FROM table_name;` | `SELECT QUARTER('2017-06-15');` | Jan–Mar = 1, Apr–Jun = 2, Jul–Sep = 3, Oct–Dec = 4 |
+| WEEK() | Returns the week number for a given date (0 to 53). | `SELECT WEEK(date, firstdayofweek) FROM table_name;` | `SELECT WEEK('2017-06-15');` | `firstdayofweek` determines week numbering rules |
+| WEEKDAY() | Returns the weekday number for a given date (0 = Monday, ..., 6 = Sunday). | `SELECT WEEKDAY(date) FROM table_name;` | `SELECT WEEKDAY('2017-06-15');` | |
+| WEEKOFYEAR() | Returns the week number for a date (1 to 53) using Monday as first day and week 1 has > 3 days. | `SELECT WEEKOFYEAR(date) FROM table_name;` | `SELECT WEEKOFYEAR('2017-01-01');` | |
+| YEAR() | Returns the year part for a given date (1000 to 9999). | `SELECT YEAR(date) FROM table_name;` | `SELECT YEAR('2017-06-15');` | |
+| YEARWEEK() | Returns the year and week number for a date. | `SELECT YEARWEEK(date, firstdayofweek) FROM table_name;` | `SELECT YEARWEEK('2017-10-25');` | `firstdayofweek` changes how weeks are calculated |
+| DATE_FORMAT() | Formats a date using the specified format string. | `SELECT DATE_FORMAT(date, format) FROM table_name;` | `SELECT DATE_FORMAT('2017-06-15', '%W %M %e %Y');` | Uses format codes like `%Y`, `%m`, `%d`, `%H`, `%i`, `%s`, etc. |
+| DATE_ADD()/DATE_SUB()/ADDDATE() | Adds or subtracts a specified interval from a date. | `SELECT DATE_ADD(date_expression, INTERVAL value unit) AS new_date;` | `SELECT DATE_ADD('2017-06-15 09:34:21', INTERVAL -3 HOUR);` | Units include `MICROSECOND`, `SECOND`, `MINUTE`, `HOUR`, `DAY`, `WEEK`, `MONTH`, `QUARTER`, `YEAR`, etc. |
+| EXTRACT() | Extracts a specific part from a date or time. | `SELECT EXTRACT(part FROM date_expression) AS extracted_part;` | `SELECT EXTRACT(MONTH FROM '2017-06-15');` | |
+| TIMESTAMPDIFF() | Calculates the difference between two timestamps in the specified unit. | `SELECT TIMESTAMPDIFF(unit, timestamp1, timestamp2) AS difference;` | `SELECT TIMESTAMPDIFF(DAY, '1898-03-22', '2019-05-02') AS Result;` | Units can be `DAY`, `WEEK`, `MONTH`, `QUARTER`, `YEAR`, `HOUR`, `MINUTE`, `SECOND`, `MICROSECOND` |
+| DATEDIFF() | Calculates the difference in days between two dates. | `SELECT DATEDIFF(date1, date2) AS difference_in_days;` | `SELECT DATEDIFF('2017/08/25', '2011/08/25') AS DateDiff;` | Result is `date1 - date2` |
+
+### Conditional/Advanced SQL Expressions
+
+| Command | Description | Syntax | Example |
+|---|---|---|---|
+| CASE Statement | The CASE statement allows you to perform conditional logic within a query. | `SELECT column1, column2, CASE WHEN condition1 THEN result1 WHEN condition2 THEN result2 ELSE default_result END AS alias FROM table_name;` | `SELECT order_id, total_amount, CASE WHEN total_amount > 1000 THEN 'HighValueOrder' WHEN total_amount > 500 THEN 'Medium ValueOrder' ELSE 'Low ValueOrder' END AS order_status FROM orders;` |
+| IF() | The IF() function evaluates a condition and returns a value based on the evaluation. | `SELECT IF(condition, true_value, false_value) AS alias FROM table_name;` | `SELECT name, age, IF(age > 50, 'Senior', 'Junior') AS employee_category FROM employees;` |
+| COALESCE() | The COALESCE() function returns the first non-null value from a list of values. | `SELECT COALESCE(value1, value2, ...) AS alias FROM table_name;` | `SELECT COALESCE(first_name, middle_name) AS preferred_name FROM employees;` |
+| BIN() | The BIN() function returns a binary representation of a number as a string value. | `SELECT BIN(number) FROM table_name;` | `SELECT BIN(8);` |
+| CAST()/CONVERT() | The CAST() function converts a value to the specified datatype. | `SELECT CAST(value AS datatype) FROM table_name;` | `SELECT CAST('2017-08-29' AS DATE);` |
+| NULLIF() | The NULLIF() function returns NULL if two specified expressions are equal; otherwise it returns the first expression. | `SELECT NULLIF(expression1, expression2) AS alias FROM table_name;` | `SELECT NULLIF(total_amount, discounted_amount) AS diff_amount FROM orders;` |
+
+
+
+
+
 
